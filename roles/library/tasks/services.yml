@@ -1,0 +1,78 @@
+- name: copy calibre-server service file
+  ansible.builtin.copy:
+    src: calibre-server.service
+    dest: /etc/systemd/system/calibre-server.service
+    owner: root
+    group: root
+    force: yes
+    mode: u=rw,g=r,o=r
+
+- name: copy calibre-web service file
+  ansible.builtin.copy:
+    src: calibre-web.service
+    dest: /etc/systemd/system/calibre-web.service
+    owner: root
+    group: root
+    force: yes
+    mode: u=rw,g=r,o=r
+
+- name: copy lazy_librarianb service file
+  ansible.builtin.copy:
+    src: lazy-librarian.service
+    dest: /etc/systemd/system/lazy-librarian.service
+    owner: root
+    group: root
+    force: yes
+    mode: u=rw,g=r,o=r
+
+- name: copy qbittorrent.service service file
+  ansible.builtin.copy:
+    src: qbittorrent.service
+    dest: /etc/systemd/system/qbittorrent.service
+    group: root
+    force: yes
+    mode: u=rw,g=r,o=r
+
+- name: copy booksonic.service service file
+  ansible.builtin.copy:
+    src: booksonic.service
+    dest: /etc/systemd/system/booksonic.service
+    group: root
+    force: yes
+    mode: u=rw,g=r,o=r
+
+- name: daemon reload
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+# Calibre-server needs to be disable in order LL to use calibredb 
+- name: start and enable calibre-server
+  systemd:
+    name: calibre-server
+    state: stopped
+    enabled: no
+
+- name: start and enable calibre-web
+  systemd:
+    name: calibre-web
+    state: started
+    enabled: yes
+
+- name: start and enable lazy-librarian
+  systemd:
+    name: lazy-librarian
+    state: started
+    enabled: yes
+
+- name: start and enable qbittorrent
+  systemd:
+    name: qbittorrent
+    state: started
+    enabled: yes
+
+# not in use for now
+- name: start and enable booksonic
+  systemd:
+    name: booksonic
+    state: stopped
+    enabled: no

@@ -1,0 +1,56 @@
+- name: install packages
+  package:
+    name: 
+      - cockpit
+      - cockpit-networkmanager
+      - cockpit-storaged
+      - cockpit-system
+      - "{{ nfs_client_package_mame }}"
+      - vim
+      - bash-completion
+      - python3
+      - python3-pip
+      - "{{ auto_upgrade_package_name }}"
+      - htop
+      - rsync
+    state: latest
+
+- name: enable automatic upgrades
+  systemd:
+    name: "{{ auto_upgrade_package_process }}"
+    state: started
+    enabled: yes
+
+- name: enable cockpit
+  systemd:
+    name: cockpit.socket
+    state: started
+    enabled: yes
+
+- name: cockpit firewall 
+  ansible.posix.firewalld:
+    port: 9090/tcp
+    permanent: yes
+    state: enabled
+  when: ansible_distribution == "CentOS"
+
+- name: Set proxy public key
+  ansible.posix.authorized_key:
+    user: enrico
+    state: present
+    key: "{{ lookup('file', 'id_rsa.pub') }}"
+
+- name: unattended upgrades configuration file
+  ansible.builtin.copy:
+    src: 50unattended-upgrades
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  when: ansible_distribution == "Ubuntu"
+
+# - name: add epel repository
+#   yum_repository:
+#     name: epel
+#     description: EPEL YUM repo
+#     baseurl: 

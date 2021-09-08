@@ -1,0 +1,3 @@
+auto_upgrade_package_name: unattended-upgrades
+auto_upgrade_package_process: unattended-upgrades
+nfs_client_package_mame: nfs-common

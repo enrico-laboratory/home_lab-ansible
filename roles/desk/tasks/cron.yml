@@ -1,0 +1,26 @@
+- name: insert cron PATH
+  ansible.builtin.cron:
+    name: PATH
+    env: yes
+    user: "root"
+    job: "/usr/bin:/usr/local/bin:/usr/sbin"
+    cron_file: scripts
+
+- name: backup cron
+  ansible.builtin.cron:
+    name: "general backup"
+    minute: "00"
+    hour: "23"
+    user: "root"
+    weekday: "0"
+    job: "bash /home/enrico/.local/bin/rdiff-backup.sh"
+    cron_file: scripts
+    state: absent
+
+- name: start up vms
+  ansible.builtin.cron:
+    name: "Start up VMs"
+    special_time: reboot   
+    user: "root"    
+    job: "bash /home/enrico/.local/bin/start_vm.sh"
+    cron_file: scripts

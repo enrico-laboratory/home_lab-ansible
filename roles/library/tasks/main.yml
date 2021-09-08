@@ -1,0 +1,11 @@
+- name: volumes
+  import_tasks: volumes.yml
+
+- name: packages
+  import_tasks: packages.yml
+
+- name: conifg
+  import_tasks: config.yml
+
+- name: services
+  import_tasks: services.yml

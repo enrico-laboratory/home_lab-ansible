@@ -1,0 +1,5 @@
+- name: add Jellyfin to enrico group
+  user:
+    name: jellyfin
+    append: yes
+    group: enrico

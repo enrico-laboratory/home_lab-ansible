@@ -1,0 +1,16 @@
+- name: create volumes directories
+  file:
+    path: '/library'
+    state: directory
+    owner: enrico
+    group: enrico
+
+- name: Mount an NFS volumes
+  ansible.posix.mount:
+    src: "{{ item.src }}"
+    path: "{{ item.path }}"
+    opts: rw
+    state: mounted
+    fstype: nfs
+  loop:
+    - { src: '10.0.0.50:/volumes/library', path: '/library' }

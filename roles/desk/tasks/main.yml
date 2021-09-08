@@ -1,0 +1,26 @@
+- name: volumes
+  import_tasks: volumes.yml
+
+- name: users
+  import_tasks: users.yml
+  
+- name: system configs
+  import_tasks: config.yml
+
+- name: repositories 
+  import_tasks: repos.yml
+
+- name: packages
+  import_tasks: packages.yml
+
+- name: services
+  import_tasks: services.yml
+
+- name: scripts
+  import_tasks: scripts.yml
+
+- name: cron
+  import_tasks: cron.yml
+
+#- name: desktop preferences
+#  import_tasks: desktop_preferences.yml

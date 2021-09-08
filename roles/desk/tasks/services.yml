@@ -1,0 +1,11 @@
+- name: start nfs share
+  systemd:
+    name: nfs-server.service
+    state: started
+    enabled: yes
+
+- name: start smb share
+  systemd:
+    name: smbd.service
+    state: started
+    enabled: yes

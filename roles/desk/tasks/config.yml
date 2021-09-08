@@ -1,0 +1,17 @@
+- name: samba.conf
+  ansible.builtin.copy:
+    src: smb.conf
+    dest: /etc/samba/smb.conf
+    force: yes
+
+- name: exports
+  ansible.builtin.copy:
+    src: exports
+    dest: /etc/exports
+    force: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+
+#- name: export nfs
+#  ansible.builtin.script: "/usr/sbin/exportfs -sa"

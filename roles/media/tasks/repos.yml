@@ -1,0 +1,17 @@
+- name: add jellyfin key
+  apt_key:
+    url: "https://repo.jellyfin.org/ubuntu/jellyfin_team.gpg.key"
+#    id: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
+    keyring: /etc/apt/trusted.gpg.d/jellyfin.gpg
+    state: present
+
+- name: add Jellyfin repository
+  apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/jellyfin.gpg] https://repo.jellyfin.org/ubuntu {{ ansible_distribution_release | lower }} main"
+    state: present
+    filename: jellyfin
+
+- name: update repos
+  apt: 
+    update_cache: yes
+    upgrade: full

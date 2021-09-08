@@ -1,0 +1,13 @@
+[Unit]
+Description=LazyLibrarian
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/lazy_librarian/LazyLibrarian.py
+Type=simple
+User=enrico
+Group=enrico
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

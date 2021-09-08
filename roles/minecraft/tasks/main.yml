@@ -1,0 +1,41 @@
+- name: install Java
+  dnf:
+    name: java-11-openjdk-devel
+    state: latest
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: /opt/minecraft
+    state: directory
+    mode: '0755'
+    owner: enrico
+    group: enrico
+
+- name: firewalld config
+  ansible.posix.firewalld:
+    port: 25565/tcp
+    permanent: yes
+    state: enabled
+
+- name: mount minecraft lvm
+  mount:
+    src: /dev/sda
+    path: /opt/minecraft
+    state: mounted
+    fstype: ext4
+
+- name: copy minecraft scripts conf
+  ansible.builtin.copy:
+    src: mcoff
+    dest: /home/enrico/bin/mcoff
+    force: yes
+- name: copy minecraft scripts conf
+  ansible.builtin.copy:
+    src: mcon
+    dest: /home/enrico/bin/mcon
+    force: yes
+- name: copy minecraft scripts conf
+  ansible.builtin.copy:
+    src: mconcreative
+    dest: /home/enrico/bin/mconcreative
+    force: yes

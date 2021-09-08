@@ -1,0 +1,14 @@
+- name: volumes
+  import_tasks: volumes.yml
+
+- name: repos
+  import_tasks: repos.yml
+
+- name: packages
+  import_tasks: packages.yml
+
+- name: users
+  import_tasks: users.yml
+  
+- name: services
+  import_tasks: services.yml

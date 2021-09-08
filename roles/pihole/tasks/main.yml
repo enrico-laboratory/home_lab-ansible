@@ -1,0 +1,28 @@
+- name: install git
+  yum:
+    name: git 
+    state: latest
+
+- name: restart cockpit
+  systemd:
+    name: cockpit
+    state: started
+    enabled: yes
+
+- name: firewalld dns
+  ansible.posix.firewalld:
+    service: "{{ item }}"
+    permanent: yes
+    state: enabled
+  loop:
+    - http
+    - dns
+
+- name: Clone a pihole repo
+  ansible.builtin.git:
+    repo: https://github.com/pi-hole/pi-hole.git
+    dest: /home/enrico/pihole
+
+- name: Selinux disabled
+  ansible.posix.selinux:
+    state: disabled

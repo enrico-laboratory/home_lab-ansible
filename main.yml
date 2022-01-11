@@ -1,100 +1,32 @@
 ---
-- name: Update repostories index
-  hosts: all
+#- name: Baisc repos update, packages update and installation
+#  hosts: all
+#  gather_facts: true
+#  roles:
+#    - base
+
+- name: virtualization host
+  hosts: 192.168.1.170
   gather_facts: true
-  # tags: always
-  tasks:
-    - name: update repository index (Centos7)
-      yum:
-        update_cache: yes
-      changed_when: false
-      when: ansible_distribution == "CentOS"
-
-    - name: update repository index (ubuntu)
-      apt:
-        update_cache: yes
-      changed_when: false
-      when: ansible_distribution == "Ubuntu"
-
-    - name: update repository index (PopOS)
-      apt:
-        update_cache: yes
-      changed_when: false
-      when: ansible_distribution == "Pop!_OS"
-
-- name: Common packages
-  tags: base
-  hosts: all
-  gather_facts: false
+  tags: virt_host
   roles:
     - base
+    - desktop_config
+    - virtualization
+    - docker
 
-- name: minecraft server
-  tags: minecraft
-  hosts: minecraft.enricoruggieri.com
-  gather_facts: false
-  roles:
-    - minecraft
-
-# - name: docker server
-#   tags: docker
-#   gather_facts: false
-#   hosts: docker.enricoruggieri.com
-#   roles:
-#     - docker
-
-- name: pihole
-  gather_facts: false
+- name: configure pihole
+  hosts: 192.168.1.150
+  gather_facts: true
   tags: pihole
-  hosts: pihole.enricoruggieri.com
   roles:
+    - base
     - pihole
 
-- name: desk
-  gather_facts: false
-  tags: desk
-  hosts: desk.enricoruggieri.com
-  roles:
-    - desk
-  
-# - name: pi4
-#   gather_facts: false
-#   tags: pi4
-#   hosts: pi4.enricoruggieri.com
-#   roles:
-#     - pi4
-
-- name: desk2
-  gather_facts: false
-  tags: desk2
-  hosts: desk2.enricoruggieri.com
-  roles:
-    - desk2
-
-# - name: docker2
-#   gather_facts: false
-#   tags: docker2
-#   hosts: docker2.enricoruggieri.com
-#   roles:
-#     - docker2
-
-- name: library
-  gather_facts: false
-  tags: library
-  hosts: library.enricoruggieri.com
-  roles:
-    - library
-
-- name: media
+- name: configure backup host
+  hosts: 192.168.1.179
   gather_facts: true
-  tags: media
-  hosts: media.enricoruggieri.com
+  tags: backup
   roles:
-    - media
-
-# - name: workstation
-#   gather_facts: true
-#   tags: workstation
-#   hosts: workstation.enricoruggieri.com
-#   roles:
-#     - workstation
+    - base
+    - backup

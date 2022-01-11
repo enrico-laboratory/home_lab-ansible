@@ -1,0 +1,19 @@
+- name: install virtualization packages
+  dnf:
+    name:
+      - '@Virtualization Host'
+      - virt-install
+      - virt-top
+      - libguestfs-tools
+      - virt-manager
+      - virt-viewer
+      - libvirt-devel
+      - python2-devel
+      - python3-devel
+    state: latest
+
+- name: start and enable libvirtd
+  systemd:
+    name: libvirtd
+    state: started
+    enabled: yes

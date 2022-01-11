@@ -1,0 +1,34 @@
+- name: Set a hostname
+  ansible.builtin.hostname:
+    name: backup.enricoruggieri.com
+
+- name: install rdiff-backup packages
+  package:
+    name: rdiff-backup
+    state: latest
+
+- name: copy scripts
+  ansible.builtin.copy:
+    src: "{{ scripts_dir }}backup"
+    dest: /home/enrico/bin/
+    owner: enrico
+    group: enrico
+    force: yes
+    mode: "0640"
+
+- name: create backup directory
+  file:
+    path: "/volumes/backup"
+    state: directory
+    owner: enrico
+    group: enrico
+
+- name: mount lvs
+  ansible.posix.mount:
+    path: "{{ item.path }}"
+    src: "{{ item.src }}"
+    state: mounted
+    fstype: "{{ item.fstype }}"
+  loop:
+    - { src: 'UUID="7846cd3f-782c-4b6f-8130-7bf738d02b1f"', path: '/volumes/backup', fstype: 'xfs' }
+

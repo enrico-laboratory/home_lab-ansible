@@ -1,8 +1,0 @@
-#!/bin/bash
-sudo umount /volumes/*
-for i in "00-ReverseProxy-Cockpit" "00-library" "00-media-server" "00-Minecraftserver" "00-pihole"
-do ssh 10.0.0.50 "sudo virsh shutdown --domain ${i}"
-done
-sleep 5
-ssh 10.0.0.50 "sudo virsh shutdown --domain 00-OPNSense;sudo reboot"
-reboot

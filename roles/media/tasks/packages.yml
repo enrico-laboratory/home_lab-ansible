@@ -1,5 +1,0 @@
-- name: install packages
-  package:
-    name:    
-      - jellyfin
-    state: latest

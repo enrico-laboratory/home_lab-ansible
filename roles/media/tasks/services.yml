@@ -1,5 +1,0 @@
-- name: start and Jellyfin
-  systemd:
-    name: jellyfin
-    state: started
-    enabled: yes

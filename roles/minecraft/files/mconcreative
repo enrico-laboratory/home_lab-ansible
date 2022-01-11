@@ -1,4 +1,0 @@
-#!/bin/bash
-
-cd /opt/minecraft/minecraft-1.16.5-creative
-/usr/bin/java -jar /opt/minecraft/minecraft-1.16.5-creative/server.jar --nogui & 

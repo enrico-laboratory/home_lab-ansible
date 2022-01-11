@@ -1,5 +1,0 @@
-- name: Configure default terminal
-  community.general.dconf:
-    key: "/org/gnome/desktop/default-applications/terminal"
-    value: "'tilix'"
-    state: present

@@ -1,0 +1,36 @@
+- name: create volumes directories
+  file:
+    path: "/volumes/{{ item }}"
+    state: directory
+    owner: enrico
+    group: enrico
+  loop:
+    - iso
+    - share
+    - media
+    - torrent
+    - library
+    - docker_conf
+    - backup
+    - archivio
+
+- name: mount lvs
+  ansible.posix.mount:
+    path: "{{ item.path }}"
+    src: "{{ item.src }}"
+    state: mounted
+    fstype: "{{ item.fstype }}"
+  loop:
+    #    hold home directory
+    #    - { src: '/dev/mapper/vg_ssd_data-home', path: '/home', fstype: 'ext4' }
+    - { src: '/dev/mapper/vg_ssd_data-images', path: '/var/lib/libvirt/images', fstype: 'ext4' }
+    - { src: '/dev/mapper/vg_hdd_data-iso', path: '/volumes/iso', fstype: 'xfs' }
+    - { src: '/dev/mapper/vg_hdd_data-share', path: '/volumes/share', fstype: 'ext4' }
+    - { src: '/dev/mapper/vg_hdd_data-media', path: '/volumes/media', fstype: 'xfs' }
+    - { src: '/dev/mapper/vg_hdd_data-torrent', path: '/volumes/torrent', fstype: 'ext4' }
+    - { src: '/dev/mapper/vg_hdd_data-books', path: '/volumes/library', fstype: 'ext4' }
+    #    - { src: '/dev/mapper/vg_ssd_data-home_brubbi', path: '/home/brubbi', fstype: 'ext4' }
+    - { src: '/dev/mapper/vg_hdd_data-docker_conf', path: '/volumes/docker_conf', fstype: 'ext4' }
+    - { src: '/dev/mapper/vg_ssd_data-minecraft', path: '/volumes/minecraft', fstype: 'ext4' }
+#    - { src: 'UUID="7846cd3f-782c-4b6f-8130-7bf738d02b1f"', path: '/volumes/backup', fstype: 'xfs' }
+    - { src: '/dev/mapper/vg_hdd_data-archivio', path: '/volumes/archivio', fstype: 'ext4' }

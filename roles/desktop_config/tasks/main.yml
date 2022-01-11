@@ -1,0 +1,12 @@
+#- name: Add another bin dir to system-wide $PATH.
+## Make sure its idempotent otherwise PATH grows on every run.
+#  when: ansible_env.PATH is not search(my_custom_path_var)
+#  copy:
+#    dest: /etc/profile.d/custom-path.sh
+#    content: 'PATH=$PATH:{{ my_custom_path_var }}'
+
+- name: configure and mount volumes
+  import_tasks: volumes.yml
+
+- name: firewall settings
+  import_tasks: firewall.yml

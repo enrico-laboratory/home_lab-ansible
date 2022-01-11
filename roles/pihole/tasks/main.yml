@@ -1,14 +1,22 @@
-- name: install git
-  yum:
-    name: git 
-    state: latest
+- name: Set a hostname
+  ansible.builtin.hostname:
+    name: pihole.enricoruggieri.com
 
-- name: restart cockpit
-  systemd:
-    name: cockpit
-    state: started
-    enabled: yes
+- name: Add the user 'enrico'
+  ansible.builtin.user:
+    name: enrico
+    group: enrico
+    append: yes
+    groups:
+      - sudo
 
+# only for Rhel based
+- name: Selinux disabled
+  ansible.posix.selinux:
+    state: disabled
+  when: ansible_distribution == "Rocky"
+
+# only for Rhel based
 - name: firewalld dns
   ansible.posix.firewalld:
     service: "{{ item }}"
@@ -17,12 +25,38 @@
   loop:
     - http
     - dns
+  when: ansible_distribution == "Rocky"
 
 - name: Clone a pihole repo
+  become: no
   ansible.builtin.git:
-    repo: https://github.com/pi-hole/pi-hole.git
+    repo: "https://github.com/pi-hole/pi-hole.git"
     dest: /home/enrico/pihole
+    depth: 1
 
-- name: Selinux disabled
-  ansible.posix.selinux:
-    state: disabled
+- name: Cron update pihole
+  ansible.builtin.cron:
+    name: "update pihole"
+    minute: "00"
+    hour: "23"
+    user: "enrico"
+    weekday: "0"
+    job: "/usr/local/bin/pihole -a -t"
+    state: present
+
+- name: create backup pihole config directory
+  file:
+    path: "/home/enrico/pihole_config_backup"
+    state: directory
+    owner: enrico
+    group: enrico
+
+- name: cron backup pihole config
+  ansible.builtin.cron:
+    name: "backup pihole config"
+    day: "1"
+    minute: "00"
+    hour: "23"
+    user: "enrico"
+    job: "cd /home/enrico/pihole_config_backup; /usr/local/bin/pihole -up"
+    state: present
